@@ -48,12 +48,14 @@ module Specr
     def request(verb, endpoint, opts = {})
       raise 'HTTP Verb must be a symbol' unless verb.is_a? Symbol
       url = build_url(endpoint)
+      multipart = opts.fetch(:multipart, false)
       options = build_options(opts)
 
       request_info = {
         verb: verb.to_s.upcase,
         url: url,
         endpoint: refine_endpoint(endpoint),
+        multipart: multipart,
         request_body: options.fetch(:body, nil)
       }
       Specr.logger.debug("REQUEST_INFO:\n#{request_info.pretty_inspect}")
