@@ -16,6 +16,7 @@ module Specr
         name: scenario_name,
         endpoint: opts.fetch(:endpoint),
         method: opts.fetch(:verb),
+        multipart: opts.fetch(:multipart),
         request: request,
         response: condensed_response_body_results(opts.fetch(:response_body)),
         response_code: opts.fetch(:response_code),
