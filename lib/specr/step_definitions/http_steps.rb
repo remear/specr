@@ -12,13 +12,11 @@ When(/^I (\w+) to ((?:https?:\/)?\/\S*) with the body:$/) do |verb, url, body|
 end
 
 When(/^I (POST|PATCH) to (\/\S*?) with the file "(.*?)" as "(.*?)"$/) do |verb, url, file, file_field|
-  Specr.client.send("#{verb.downcase}_multipart",
-                    Specr.client.hydrater(url), Specr.client.hydrater(file), file_field, nil)
+  Specr.client.send("#{verb.downcase}_multipart", url, Specr.client.hydrater(file), file_field, nil)
 end
 
 When(/^I (POST|PATCH) to (\/\S*?) with the "(.*?)" file as "(.*?)" and the body:$/) do |verb, url, file, file_field, body|
-  Specr.client.send("#{verb.downcase}_multipart",
-                    Specr.client.hydrater(url), Specr.client.hydrater(file), file_field, body)
+  Specr.client.send("#{verb.downcase}_multipart", url, Specr.client.hydrater(file), file_field, body)
 end
 
 When(/^I (\w+) to the "(.*?)" link with the body:$/) do |verb, keys, body|
