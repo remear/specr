@@ -30,6 +30,7 @@ module Specr
     attr_accessor :default_headers
     attr_accessor :max_request_attempts
     attr_accessor :request_attempt_delay
+    attr_accessor :record_specified_steps_only
 
     def initialize
       @root_url = 'http://localhost:3000'
@@ -39,6 +40,7 @@ module Specr
       }
       @max_request_attempts = 5
       @request_attempt_delay = 2
+      @record_specified_steps_only = true
     end
   end
 end

@@ -70,8 +70,12 @@ module Specr
         response_message: response.message
       }
       Specr.logger.debug("RESPONSE_INFO:\n#{response_info.pretty_inspect}")
-      extracer.log_request(**request_info, **response_info) if last_code < 400
+      extracer.log_request(**request_info, **response_info) if log_request?(step)
       response
+    end
+
+    def log_request?(step)
+      last_code < 400 && (Specr.configuration.record_specified_steps_only ? step : true)
     end
 
     def post(endpoint, body = nil, opts = {})
