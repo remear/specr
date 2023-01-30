@@ -49,12 +49,14 @@ module Specr
       raise 'HTTP Verb must be a symbol' unless verb.is_a? Symbol
       url = build_url(endpoint)
       multipart = opts.fetch(:multipart, false)
+      step = opts.delete(:step)
       options = build_options(opts)
 
       request_info = {
         verb: verb.to_s.upcase,
         url: url,
         endpoint: refine_endpoint(endpoint),
+        step: step,
         multipart: multipart,
         request_body: options.fetch(:body, nil)
       }
@@ -92,8 +94,8 @@ module Specr
       request(:patch, endpoint, opts.merge!(body: body))
     end
 
-    def get(endpoint)
-      request(:get, endpoint)
+    def get(endpoint, _body = nil, opts = {})
+      request(:get, endpoint, opts)
     end
 
     def delete(endpoint, body = nil, opts = {})
