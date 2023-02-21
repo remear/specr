@@ -40,7 +40,7 @@ module Specr
       }
       @max_request_attempts = 5
       @request_attempt_delay = 2
-      @record_specified_steps_only = true
+      @record_specified_steps_only = false
     end
   end
 end
