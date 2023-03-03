@@ -48,12 +48,16 @@ module Specr
     def request(verb, endpoint, opts = {})
       raise 'HTTP Verb must be a symbol' unless verb.is_a? Symbol
       url = build_url(endpoint)
+      multipart = opts.fetch(:multipart, false)
+      step = opts.delete(:step)
       options = build_options(opts)
 
       request_info = {
         verb: verb.to_s.upcase,
         url: url,
         endpoint: refine_endpoint(endpoint),
+        step: step,
+        multipart: multipart,
         request_body: options.fetch(:body, nil)
       }
       Specr.logger.debug("REQUEST_INFO:\n#{request_info.pretty_inspect}")
@@ -66,8 +70,12 @@ module Specr
         response_message: response.message
       }
       Specr.logger.debug("RESPONSE_INFO:\n#{response_info.pretty_inspect}")
-      extracer.log_request(**request_info, **response_info) if last_code < 400
+      extracer.log_request(**request_info, **response_info) if log_request?(step)
       response
+    end
+
+    def log_request?(step)
+      last_code < 400 && (Specr.configuration.record_specified_steps_only ? step : true)
     end
 
     def post(endpoint, body = nil, opts = {})
@@ -90,8 +98,8 @@ module Specr
       request(:patch, endpoint, opts.merge!(body: body))
     end
 
-    def get(endpoint)
-      request(:get, endpoint)
+    def get(endpoint, _body = nil, opts = {})
+      request(:get, endpoint, opts)
     end
 
     def delete(endpoint, body = nil, opts = {})

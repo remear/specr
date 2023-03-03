@@ -13,9 +13,10 @@ module Specr
     def log_request(opts = {})
       request = process_request(opts[:request_body])
       scenario = {
-        name: scenario_name,
+        name: scenario_name(opts.fetch(:step)),
         endpoint: opts.fetch(:endpoint),
         method: opts.fetch(:verb),
+        multipart: opts.fetch(:multipart),
         request: request,
         response: condensed_response_body_results(opts.fetch(:response_body)),
         response_code: opts.fetch(:response_code),
@@ -71,10 +72,12 @@ module Specr
       end.compact
     end
 
-    def scenario_name
+    def scenario_name(step)
       scenario = Specr.client.current_scenario
       [scenario.feature.name.underscore.parameterize(separator: '_'),
-       scenario.name.underscore.parameterize(separator: '_')].join('.')
+       scenario.name.underscore.parameterize(separator: '_'),
+       step&.underscore&.parameterize(separator: '_')
+      ].compact.join('.')
     end
 
     def resolve_refs(json, path)
