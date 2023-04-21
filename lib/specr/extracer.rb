@@ -56,6 +56,12 @@ module Specr
       File.open(file, 'w') { |f| f.write(JSON.pretty_generate(json)) }
     end
 
+    def rewrite_response_for_step(new_response, step)
+      scenario_name = scenario_name(step)
+      scenario = @scenarios.find { |s| s[:name] == scenario_name }
+      scenario[:response] = condensed_response_body_results(new_response) if scenario
+    end
+
     private
 
     def process_request(request_body)
