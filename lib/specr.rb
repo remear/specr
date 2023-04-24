@@ -12,6 +12,7 @@ require 'specr/step_definitions/http_steps'
 require 'specr/step_definitions/jsonapi_steps'
 require 'specr/step_definitions/validation_steps'
 require 'specr/step_definitions/jsonapi_validation_steps'
+require 'specr/step_definitions/rewrite_response_steps'
 
 require 'specr/features/support/initial_setup'
 
